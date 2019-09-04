@@ -60,81 +60,81 @@ debug_clickhouse: build_deps_debug_clickhouse build_lib_debug_clickhouse build_s
 
 .PHONY: build_deps
 build_deps:
-	cd deps && OPTZ="${O2} -ggdb" CC=${CC} CXX=${CXX} ${MAKE}
+	cd ./deps && OPTZ="${O2} -ggdb" CC=${CC} CXX=${CXX} ${MAKE}
 
 .PHONY: build_lib
 build_lib: build_deps
-	cd lib && OPTZ="${O2} -ggdb" CC=${CC} CXX=${CXX} ${MAKE}
+	cd ./lib && OPTZ="${O2} -ggdb" CC=${CC} CXX=${CXX} ${MAKE}
 
 .PHONY: build_src
 build_src: build_deps build_lib
-	cd src && OPTZ="${O2} -ggdb" CC=${CC} CXX=${CXX} ${MAKE}
+	cd ./src && OPTZ="${O2} -ggdb" CC=${CC} CXX=${CXX} ${MAKE}
 
 .PHONY: build_deps_debug
 build_deps_debug:
-	cd deps && OPTZ="${O0} -ggdb -DDEBUG" PROXYDEBUG=1 CC=${CC} CXX=${CXX} ${MAKE}
+	cd ./deps && OPTZ="${O0} -ggdb -DDEBUG" PROXYDEBUG=1 CC=${CC} CXX=${CXX} ${MAKE}
 
 .PHONY: build_lib_debug
 build_lib_debug: build_deps_debug
-	cd lib && OPTZ="${O0} -ggdb -DDEBUG" CC=${CC} CXX=${CXX} ${MAKE}
+	cd ./lib && OPTZ="${O0} -ggdb -DDEBUG" CC=${CC} CXX=${CXX} ${MAKE}
 
 .PHONY: build_src_testaurora
 build_src_testaurora: build_deps build_lib_testaurora
-	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_AURORA" CC=${CC} CXX=${CXX} ${MAKE}
+	cd ./src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_AURORA" CC=${CC} CXX=${CXX} ${MAKE}
 
 .PHONY: build_lib_testaurora
 build_lib_testaurora: build_deps_debug
-	cd lib && OPTZ="${O0} -ggdb -DDEBUG -DTEST_AURORA" CC=${CC} CXX=${CXX} ${MAKE}
+	cd ./lib && OPTZ="${O0} -ggdb -DDEBUG -DTEST_AURORA" CC=${CC} CXX=${CXX} ${MAKE}
 
 .PHONY: build_src_testgalera
 build_src_testgalera: build_deps build_lib_testgalera
-	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_GALERA" CC=${CC} CXX=${CXX} ${MAKE}
+	cd ./src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_GALERA" CC=${CC} CXX=${CXX} ${MAKE}
 
 .PHONY: build_lib_testgalera
 build_lib_testgalera: build_deps_debug
-	cd lib && OPTZ="${O0} -ggdb -DDEBUG -DTEST_GALERA" CC=${CC} CXX=${CXX} ${MAKE}
+	cd ./lib && OPTZ="${O0} -ggdb -DDEBUG -DTEST_GALERA" CC=${CC} CXX=${CXX} ${MAKE}
 
 .PHONY: build_src_testall
 build_src_testall: build_deps build_lib_testall
-	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_AURORA -DTEST_GALERA" CC=${CC} CXX=${CXX} ${MAKE}
+	cd ./src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_AURORA -DTEST_GALERA" CC=${CC} CXX=${CXX} ${MAKE}
 
 .PHONY: build_lib_testall
 build_lib_testall: build_deps_debug
-	cd lib && OPTZ="${O0} -ggdb -DDEBUG -DTEST_AURORA -DTEST_GALERA" CC=${CC} CXX=${CXX} ${MAKE}
+	cd ./lib && OPTZ="${O0} -ggdb -DDEBUG -DTEST_AURORA -DTEST_GALERA" CC=${CC} CXX=${CXX} ${MAKE}
 
 .PHONY: build_src_debug
 build_src_debug: build_deps build_lib_debug
-	cd src && OPTZ="${O0} -ggdb -DDEBUG" CC=${CC} CXX=${CXX} ${MAKE}
+	cd ./src && OPTZ="${O0} -ggdb -DDEBUG" CC=${CC} CXX=${CXX} ${MAKE}
 
 .PHONY: build_deps_clickhouse
 build_deps_clickhouse:
-	cd deps && OPTZ="${O2} -ggdb" PROXYSQLCLICKHOUSE=1 CC=${CC} CXX=${CXX} ${MAKE}
+	cd ./deps && OPTZ="${O2} -ggdb" PROXYSQLCLICKHOUSE=1 CC=${CC} CXX=${CXX} ${MAKE}
 
 .PHONY: build_deps_debug_clickhouse
 build_deps_debug_clickhouse:
-	cd deps && OPTZ="${O0} -ggdb -DDEBUG" PROXYSQLCLICKHOUSE=1 PROXYDEBUG=1 CC=${CC} CXX=${CXX} ${MAKE}
+	cd ./deps && OPTZ="${O0} -ggdb -DDEBUG" PROXYSQLCLICKHOUSE=1 PROXYDEBUG=1 CC=${CC} CXX=${CXX} ${MAKE}
 
 .PHONY: build_lib_clickhouse
 build_lib_clickhouse: build_deps_clickhouse
-	cd lib && OPTZ="${O2} -ggdb" PROXYSQLCLICKHOUSE=1 CC=${CC} CXX=${CXX} ${MAKE}
+	cd ./lib && OPTZ="${O2} -ggdb" PROXYSQLCLICKHOUSE=1 CC=${CC} CXX=${CXX} ${MAKE}
 
 .PHONY: build_lib_debug_clickhouse
 build_lib_debug_clickhouse: build_deps_debug_clickhouse
-	cd lib && OPTZ="${O0} -ggdb -DDEBUG" PROXYSQLCLICKHOUSE=1 CC=${CC} CXX=${CXX} ${MAKE}
+	cd ./lib && OPTZ="${O0} -ggdb -DDEBUG" PROXYSQLCLICKHOUSE=1 CC=${CC} CXX=${CXX} ${MAKE}
 
 .PHONY: build_src_clickhouse
 build_src_clickhouse: build_deps_clickhouse build_lib_clickhouse
-	cd src && OPTZ="${O2} -ggdb" PROXYSQLCLICKHOUSE=1 CC=${CC} CXX=${CXX} ${MAKE}
+	cd ./src && OPTZ="${O2} -ggdb" PROXYSQLCLICKHOUSE=1 CC=${CC} CXX=${CXX} ${MAKE}
 
 .PHONY: build_src_debug_clickhouse
 build_src_debug_clickhouse: build_deps build_lib_debug_clickhouse
-	cd src && OPTZ="${O0} -ggdb -DDEBUG" PROXYSQLCLICKHOUSE=1 CC=${CC} CXX=${CXX} ${MAKE}
+	cd ./src && OPTZ="${O0} -ggdb -DDEBUG" PROXYSQLCLICKHOUSE=1 CC=${CC} CXX=${CXX} ${MAKE}
 
 
 .PHONY: clean
 clean:
-	cd lib && ${MAKE} clean
-	cd src && ${MAKE} clean
+	cd ./lib && ${MAKE} clean
+	cd ./src && ${MAKE} clean
 
 packages: centos6.7 centos7 centos6.7-dbg centos7-dbg ubuntu14 debian7 debian8 ubuntu14-dbg debian7-dbg debian8-dbg ubuntu16 ubuntu16-dbg fedora24 fedora24-dbg debian9 debian9-dbg ubuntu16-clickhouse debian9-clickhouse centos7-clickhouse fedora24-clickhouse fedora27 fedora27-dbg fedora27-clickhouse ubuntu18 ubuntu18-dbg ubuntu18-clickhouse fedora28 fedora28-dbg fedora28-clickhouse
 .PHONY: packages
@@ -383,17 +383,17 @@ binaries/proxysql_${CURVER}-dbg-debian9.4_amd64.deb:
 
 .PHONY: cleanall
 cleanall:
-	cd deps && ${MAKE} cleanall
-	cd lib && ${MAKE} clean
-	cd src && ${MAKE} clean
+	cd ./deps && ${MAKE} cleanall
+	cd ./lib && ${MAKE} clean
+	cd ./src && ${MAKE} clean
 	rm binaries/*deb || true
 	rm binaries/*rpm || true
 
 .PHONY: cleanbuild
 cleanbuild:
-	cd deps && ${MAKE} cleanall
-	cd lib && ${MAKE} clean
-	cd src && ${MAKE} clean
+	cd ./deps && ${MAKE} cleanall
+	cd ./lib && ${MAKE} clean
+	cd ./src && ${MAKE} clean
 
 .PHONY: install
 install: src/proxysql
