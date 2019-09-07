@@ -74,15 +74,14 @@
  
  /**************************************************************************
  ** Do a query. If query returned rows, free old rows.
-@@ -2028,6 +2064,8 @@
-               old_pos= pos;
-               si_type= (enum enum_session_state_type)net_field_length(&pos);
-               switch(si_type) {
-+              case SESSION_TRACK_GTIDS:
-+                net_field_length(&pos); /* skip encoding */
-               case SESSION_TRACK_SCHEMA:
-               case SESSION_TRACK_STATE_CHANGE:
-               case SESSION_TRACK_TRANSACTION_CHARACTERISTICS:
+@@ -2066,6 +2066,7 @@
+             old_pos= pos;
+             si_type= (enum enum_session_state_type)net_field_length(&pos);
+             switch(si_type) {
++            case SESSION_TRACK_GTIDS: net_field_length(&pos); /* skip encoding */
+             case SESSION_TRACK_SCHEMA:
+             case SESSION_TRACK_STATE_CHANGE:
+             case SESSION_TRACK_TRANSACTION_CHARACTERISTICS:
 @@ -3425,18 +3463,27 @@
    mariadb_get_charset_info(mysql, cs);
  }

@@ -78,6 +78,7 @@ __loop_remove_inactives:
 }
 
 bool ClickHouse_Authentication::add(char * username, char * password, enum cred_username_type usertype, bool use_ssl, int default_hostgroup, char *default_schema, bool schema_locked, bool transaction_persistent, bool fast_forward, int max_connections) {
+	fprintf(stderr, "%s %d %s\n", __FILE__, __LINE__, __func__);
 	uint64_t hash1, hash2;
 	SpookyHash myhash;
 	myhash.Init(1,2);
@@ -319,6 +320,7 @@ bool ClickHouse_Authentication::del(char * username, enum cred_username_type use
 };
 
 bool ClickHouse_Authentication::set_SHA1(char * username, enum cred_username_type usertype, void *sha_pass) {
+	fprintf(stderr, "%s %d %s %s\n", __FILE__, __LINE__, __func__, sha_pass);
 	bool ret=false;
 	uint64_t hash1, hash2;
 	SpookyHash *myhash=new SpookyHash();
@@ -373,6 +375,7 @@ bool ClickHouse_Authentication::exists(char * username) {
 }
 
 char * ClickHouse_Authentication::lookup(char * username, enum cred_username_type usertype, bool *use_ssl, int *default_hostgroup, char **default_schema, bool *schema_locked, bool *transaction_persistent, bool *fast_forward, int *max_connections, void **sha1_pass) {
+	fprintf(stderr, "%s %d %s %s\n", __FILE__, __LINE__, __func__, sha1_pass);
 	char *ret=NULL;
 	uint64_t hash1, hash2;
 	SpookyHash myhash;

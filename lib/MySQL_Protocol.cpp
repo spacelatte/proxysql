@@ -56,6 +56,7 @@ static void __dump_pkt(const char *func, unsigned char *_ptr, unsigned int len) 
 #endif
 
 char *sha1_pass_hex(char *sha1_pass) {
+	fprintf(stderr, "%s %d %s %s\n", __FILE__, __LINE__, __func__, sha1_pass);
 	if (sha1_pass==NULL) return NULL;
 	char *buff=(char *)malloc(SHA_DIGEST_LENGTH*2+2);
 	buff[0]='*';
@@ -120,6 +121,7 @@ static inline int write_encoded_length_and_string(unsigned char *p, uint64_t val
 }
 
 void proxy_compute_sha1_hash_multi(uint8 *digest, const char *buf1, int len1, const char *buf2, int len2) {
+  fprintf(stderr,"%s %d %s\n", __FILE__, __LINE__, __func__);
   PROXY_TRACE();
   
   SHA_CTX sha1_context;
@@ -130,6 +132,7 @@ void proxy_compute_sha1_hash_multi(uint8 *digest, const char *buf1, int len1, co
 }
 
 void proxy_compute_sha1_hash(uint8 *digest, const char *buf, int len) {
+	fprintf(stderr,"%s %d %s\n", __FILE__, __LINE__, __func__);
   PROXY_TRACE();
   
   SHA_CTX sha1_context;
@@ -139,6 +142,7 @@ void proxy_compute_sha1_hash(uint8 *digest, const char *buf, int len) {
 }
 
 void proxy_compute_two_stage_sha1_hash(const char *password, size_t pass_len, uint8 *hash_stage1, uint8 *hash_stage2) {
+	fprintf(stderr,"%s %d %s\n", __FILE__, __LINE__, __func__);
   proxy_compute_sha1_hash(hash_stage1, password, pass_len);
   proxy_compute_sha1_hash(hash_stage2, (const char *) hash_stage1, SHA_DIGEST_LENGTH);
 }
@@ -178,6 +182,7 @@ void unhex_pass(uint8_t *out, const char *in) {
 
 void proxy_scramble(char *to, const char *message, const char *password)
 {
+	fprintf(stderr,"%s %d %s\n", __FILE__, __LINE__, __func__);
 	uint8 hash_stage1[SHA_DIGEST_LENGTH];
 	uint8 hash_stage2[SHA_DIGEST_LENGTH];
 	proxy_compute_two_stage_sha1_hash(password, strlen(password), hash_stage1, hash_stage2);
@@ -187,6 +192,7 @@ void proxy_scramble(char *to, const char *message, const char *password)
 }
 
 bool proxy_scramble_sha1(char *pass_reply,  const char *message, const char *sha1_sha1_pass, char *sha1_pass) {
+	fprintf(stderr,"%s %d %s\n", __FILE__, __LINE__, __func__);
 	bool ret=false;
 	uint8 hash_stage1[SHA_DIGEST_LENGTH];
 	uint8 hash_stage2[SHA_DIGEST_LENGTH];
@@ -1345,6 +1351,7 @@ bool MySQL_Protocol::process_pkt_auth_swich_response(unsigned char *pkt, unsigne
 		password=GloClickHouseAuth->lookup((char *)userinfo->username, USERNAME_FRONTEND, &_ret_use_ssl, &default_hostgroup, NULL, NULL, &transaction_persistent, NULL, NULL, &sha1_pass);
 #endif /* PROXYSQLCLICKHOUSE */
 	} else {
+		fprintf(stderr, "%s %d %s %s\n", __FILE__, __LINE__, __func__, sha1_pass);
 		password=GloMyAuth->lookup((char *)userinfo->username, USERNAME_FRONTEND, &_ret_use_ssl, &default_hostgroup, NULL, NULL, &transaction_persistent, NULL, NULL, &sha1_pass);
 	}
 	// FIXME: add support for default schema and fast forward , issues #255 and #256
@@ -1408,6 +1415,7 @@ bool MySQL_Protocol::process_pkt_COM_CHANGE_USER(unsigned char *pkt, unsigned in
 		password=GloClickHouseAuth->lookup((char *)user, USERNAME_FRONTEND, &_ret_use_ssl, &default_hostgroup, NULL, NULL, &transaction_persistent, NULL, NULL, &sha1_pass);
 #endif /* PROXYSQLCLICKHOUSE */
 	} else {
+		fprintf(stderr, "%s %d %s %s\n", __FILE__, __LINE__, __func__, sha1_pass);
 		password=GloMyAuth->lookup((char *)user, USERNAME_FRONTEND, &_ret_use_ssl, &default_hostgroup, NULL, NULL, &transaction_persistent, NULL, NULL, &sha1_pass);
 	}
 	// FIXME: add support for default schema and fast forward, see issue #255 and #256
@@ -1719,6 +1727,7 @@ __do_auth:
 		password=GloClickHouseAuth->lookup((char *)user, USERNAME_FRONTEND, &_ret_use_ssl, &default_hostgroup, &default_schema, &schema_locked, &transaction_persistent, &fast_forward, &max_connections, &sha1_pass);
 #endif /* PROXYSQLCLICKHOUSE */
 	} else {
+		fprintf(stderr, "%s %d %s %s\n", __FILE__, __LINE__, __func__, sha1_pass);
 		password=GloMyAuth->lookup((char *)user, USERNAME_FRONTEND, &_ret_use_ssl, &default_hostgroup, &default_schema, &schema_locked, &transaction_persistent, &fast_forward, &max_connections, &sha1_pass);
 	}
 	//assert(default_hostgroup>=0);
@@ -1804,6 +1813,7 @@ __do_auth:
 							if (backend_username) {
 								free(password);
 								password=NULL;
+								fprintf(stderr, "%s %d %s %s\n", __FILE__, __LINE__, __func__, sha1_pass);
 								password=GloMyAuth->lookup(backend_username, USERNAME_BACKEND, &_ret_use_ssl, &default_hostgroup, &default_schema, &schema_locked, &transaction_persistent, &fast_forward, &max_connections, &sha1_pass);
 								if (password) {
 									(*myds)->sess->default_hostgroup=default_hostgroup;

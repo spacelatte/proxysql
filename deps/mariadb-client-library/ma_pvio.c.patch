@@ -93,7 +93,7 @@
    if (IS_PVIO_ASYNC_ACTIVE(pvio))
    {
 +#ifdef HAVE_TLS
-+    if (pvio->ctls)
++    if (pvio->ctls) /// mert-patch-1
 +    {
 +      r= ma_pvio_tls_read_async(pvio, buffer, length);
 +      goto end;
@@ -118,7 +118,7 @@
    if (IS_PVIO_ASYNC_ACTIVE(pvio))
    {
 +#ifdef HAVE_TLS
-+    if (pvio->ctls)
++    if (pvio->ctls) /// mert-patch-2
 +    {
 +      r= ma_pvio_tls_write_async(pvio, buffer, length);
 +      goto end;
@@ -133,7 +133,7 @@
  
 +  /* secure connection */
 +#ifdef HAVE_TLS
-+  if (pvio->ctls)
++  if (pvio->ctls) /// mert-patch-3
 +  {
 +    r= ma_pvio_tls_write(pvio->ctls, buffer, length);
 +    goto end;

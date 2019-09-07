@@ -80,6 +80,7 @@ void MySQL_Connection::compute_unknown_transaction_status() {
 }
 
 uint64_t MySQL_Connection_userinfo::compute_hash() {
+	fprintf(stderr,"%s %d %s %s\n", __FILE__, __LINE__, __func__, password);
 	int l=0;
 	if (username)
 		l+=strlen(username);
@@ -116,6 +117,7 @@ uint64_t MySQL_Connection_userinfo::compute_hash() {
 }
 
 void MySQL_Connection_userinfo::set(char *u, char *p, char *s, char *sh1) {
+	fprintf(stderr,"%s %d %s\n", __FILE__, __LINE__, __func__);
 	if (u) {
 		if (username) {
 			if (strcmp(u,username)) {
@@ -140,16 +142,22 @@ void MySQL_Connection_userinfo::set(char *u, char *p, char *s, char *sh1) {
 		if (schemaname) free(schemaname);
 		schemaname=strdup(s);
 	}
+	/*
 	if (sh1) {
 		if (sha1_pass) {
 			free(sha1_pass);
 		}
 		sha1_pass=strdup(sh1);
 	}
-	compute_hash();
+	*/
+	sha1_pass = NULL;
+	//compute_hash();
+	if(sh1) fprintf(stderr, "othersetter: %s %s\n", sh1, password);
 }
 
 void MySQL_Connection_userinfo::set(MySQL_Connection_userinfo *ui) {
+	fprintf(stderr,"%s %d %s\n", __FILE__, __LINE__, __func__);
+	fprintf(stderr, "setter: %s %s\n", ui->sha1_pass, ui->password);
 	set(ui->username, ui->password, ui->schemaname, ui->sha1_pass);
 }
 
@@ -467,8 +475,10 @@ bool MySQL_Connection::match_tracked_options(MySQL_Connection *c) {
 	return false;
 }
 
+//bool yes = true;
 // non blocking API
 void MySQL_Connection::connect_start() {
+	fprintf(stderr,"%s %d %s\n", __FILE__, __LINE__, __func__);
 	PROXY_TRACE();
 	mysql=mysql_init(NULL);
 	assert(mysql);
@@ -518,12 +528,34 @@ void MySQL_Connection::connect_start() {
 
 	char *auth_password=NULL;
 	if (userinfo->password) {
-		if (userinfo->password[0]=='*') { // we don't have the real password, let's pass sha1
-			auth_password=userinfo->sha1_pass;
-		} else {
-			auth_password=userinfo->password;
-		}
+		auth_password=userinfo->password;
+		fprintf(stderr, "## PASS: %s\n", auth_password);
 	}
+	/*
+	const char *RSAKEYFILENAME  = "/data/keys/_pub.pem";
+	const char *SSLCAFILENAME   = "/data/ssl/ca-cert.pem";
+	const char *SSLKEYFILENAME  = "/data/ssl/client-key.pem";
+	const char *SSLCERTFILENAME = "/data/ssl/client-cert.pem";
+	{
+		fprintf(stderr, "#### READING PUBLIC KEY '%s'\n", RSAKEYFILENAME);
+		FILE *fp = fopen(RSAKEYFILENAME, "r");
+		char buffer[8192];
+		memset(buffer, 0, sizeof(buffer));
+		fread(buffer, sizeof(buffer), 1, fp);
+		fprintf(stderr, "%s\n", buffer);
+	}
+	mysql_options(mysql, MYSQL_OPT_SSL_ENFORCE, &yes);
+	mysql_options(mysql, MYSQL_SERVER_PUBLIC_KEY, (void*) RSAKEYFILENAME);
+	mysql_options(mysql, MYSQL_OPT_SSL_CA,   (void*) SSLCAFILENAME);
+	mysql_options(mysql, MYSQL_OPT_SSL_KEY,  (void*) SSLKEYFILENAME);
+	mysql_options(mysql, MYSQL_OPT_SSL_CERT, (void*) SSLCERTFILENAME);
+	mysql_optionsv(mysql, MYSQL_OPT_SSL_ENFORCE, &yes);
+	mysql_optionsv(mysql, MYSQL_SERVER_PUBLIC_KEY, (void*) RSAKEYFILENAME);
+	mysql_optionsv(mysql, MYSQL_OPT_SSL_CA,   (void*) SSLCAFILENAME);
+	mysql_optionsv(mysql, MYSQL_OPT_SSL_KEY,  (void*) SSLKEYFILENAME);
+	mysql_optionsv(mysql, MYSQL_OPT_SSL_CERT, (void*) SSLCERTFILENAME);
+	*/
+	mysql_optionsv(mysql, MYSQL_SERVER_PUBLIC_KEY, "public.pem");
 	if (parent->port) {
 		async_exit_status=mysql_real_connect_start(&ret_mysql, mysql, parent->address, userinfo->username, auth_password, userinfo->schemaname, parent->port, NULL, client_flags);
 	} else {
@@ -550,11 +582,7 @@ void MySQL_Connection::change_user_start() {
 	}
 	char *auth_password=NULL;
 	if (userinfo->password) {
-		if (userinfo->password[0]=='*') { // we don't have the real password, let's pass sha1
-			auth_password=userinfo->sha1_pass;
-		} else {
-			auth_password=userinfo->password;
-		}
+		auth_password=userinfo->password;
 	}
 	async_exit_status = mysql_change_user_start(&ret_bool,mysql,_ui->username, auth_password, _ui->schemaname);
 }
@@ -605,7 +633,7 @@ void MySQL_Connection::set_names_start() {
 		proxy_error("Not existing charset number %u\n", options.charset);
 		assert(0);
 	}
-	async_exit_status = mysql_set_character_set_start(&interr,mysql, NULL, options.charset);
+	async_exit_status = mysql_set_character_set_start(&interr,mysql, NULL);
 }
 
 void MySQL_Connection::set_names_cont(short event) {
@@ -1291,6 +1319,7 @@ void MySQL_Connection::next_event(MDB_ASYNC_ST new_st) {
 
 
 int MySQL_Connection::async_connect(short event) {
+	fprintf(stderr,"%s %d %s\n", __FILE__, __LINE__, __func__);
 	PROXY_TRACE();
 	if (mysql==NULL && async_state_machine!=ASYNC_CONNECT_START) {
 		assert(0);
@@ -1391,7 +1420,7 @@ int MySQL_Connection::async_query(short event, char *stmt, unsigned long length,
 			handler(event);
 			break;
 	}
-	
+
 	if (async_state_machine==ASYNC_QUERY_END) {
 		compute_unknown_transaction_status();
 		if (mysql_errno(mysql)) {
@@ -1462,7 +1491,7 @@ int MySQL_Connection::async_ping(short event) {
 			handler(event);
 			break;
 	}
-	
+
 	// check again
 	switch (async_state_machine) {
 		case ASYNC_PING_SUCCESSFUL:
@@ -1921,7 +1950,7 @@ void MySQL_Connection::close_mysql() {
 #endif
 	}
 //	int rc=0;
-	mysql_close_no_command(mysql);
+	mysql_close(mysql);
 }
 
 
@@ -1986,7 +2015,7 @@ void MySQL_Connection::reset() {
 			free(options.sql_mode);
 			options.sql_mode = NULL;
 			options.sql_mode_sent = false;
-			
+
 		}
 		options.time_zone_int = 0;
 		if (options.time_zone) {

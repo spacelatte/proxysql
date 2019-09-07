@@ -134,7 +134,7 @@ static void close_mysql(MYSQL *my) {
 		fd+=wb; // dummy, to make compiler happy
 		fd-=wb; // dummy, to make compiler happy
 	}
-	mysql_close_no_command(my);
+	mysql_close(my);
 }
 
 class MonMySrvC {
@@ -887,6 +887,7 @@ __exit_set_wait_timeout:
 	return ret;
 }
 
+//bool yes = true;
 bool MySQL_Monitor_State_Data::create_new_connection() {
 		mysql=mysql_init(NULL);
 		assert(mysql);
@@ -898,6 +899,35 @@ bool MySQL_Monitor_State_Data::create_new_connection() {
 		mysql_options(mysql, MYSQL_OPT_CONNECT_TIMEOUT, &timeout);
 		mysql_options4(mysql, MYSQL_OPT_CONNECT_ATTR_ADD, "program_name", "proxysql_monitor");
 		mysql_options4(mysql, MYSQL_OPT_CONNECT_ATTR_ADD, "_server_host", hostname);
+
+	/*
+	const char *RSAKEYFILENAME  = "/data/keys/_pub.pem";
+	const char *SSLCAFILENAME   = "/data/ssl/ca-cert.pem";
+	const char *SSLKEYFILENAME  = "/data/ssl/client-key.pem";
+	const char *SSLCERTFILENAME = "/data/ssl/client-cert.pem";
+	{
+		fprintf(stderr, "#### READING PUBLIC KEY '%s'\n", RSAKEYFILENAME);
+		FILE *fp = fopen(RSAKEYFILENAME, "r");
+		char buffer[8192];
+		memset(buffer, 0, sizeof(buffer));
+		fread(buffer, sizeof(buffer), 1, fp);
+		fprintf(stderr, "%s\n", buffer);
+	}
+	///
+	mysql_options(mysql, MYSQL_OPT_SSL_ENFORCE, &yes);
+	mysql_options(mysql, MYSQL_SERVER_PUBLIC_KEY, (void*) RSAKEYFILENAME);
+	mysql_options(mysql, MYSQL_OPT_SSL_CA,   (void*) SSLCAFILENAME);
+	mysql_options(mysql, MYSQL_OPT_SSL_KEY,  (void*) SSLKEYFILENAME);
+	mysql_options(mysql, MYSQL_OPT_SSL_CERT, (void*) SSLCERTFILENAME);
+	///
+	mysql_optionsv(mysql, MYSQL_OPT_SSL_ENFORCE, &yes);
+	mysql_optionsv(mysql, MYSQL_SERVER_PUBLIC_KEY, (void*) RSAKEYFILENAME);
+	mysql_optionsv(mysql, MYSQL_OPT_SSL_CA,   (void*) SSLCAFILENAME);
+	mysql_optionsv(mysql, MYSQL_OPT_SSL_KEY,  (void*) SSLKEYFILENAME);
+	mysql_optionsv(mysql, MYSQL_OPT_SSL_CERT, (void*) SSLCERTFILENAME);
+	*/
+	//fprintf(stderr, "## MON: %s\n", mysql_thread___monitor_password);
+	mysql_optionsv(mysql, MYSQL_SERVER_PUBLIC_KEY, "public.pem");
 		MYSQL *myrc=NULL;
 		if (port) {
 			myrc=mysql_real_connect(mysql, hostname, mysql_thread___monitor_username, mysql_thread___monitor_password, NULL, port, NULL, 0);

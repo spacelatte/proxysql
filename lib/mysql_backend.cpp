@@ -22,6 +22,7 @@ MySQL_Backend::~MySQL_Backend() {
 }
 
 void MySQL_Backend::reset() {
+	fprintf(stderr,"%s %d %s\n", __FILE__, __LINE__, __func__);
 	if (server_myds && server_myds->myconn) {
 		MySQL_Connection *mc=server_myds->myconn;
 		if (mysql_thread___multiplexing && (server_myds->DSS==STATE_MARIADB_GENERIC || server_myds->DSS==STATE_READY) && mc->reusable==true && mc->IsActiveTransaction()==false && mc->MultiplexDisabled()==false && mc->async_state_machine==ASYNC_IDLE) {

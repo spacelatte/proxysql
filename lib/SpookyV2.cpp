@@ -9,6 +9,7 @@
 //   July 30 2012: I reintroduced the buffer overflow
 //   August 5 2012: SpookyV2: d = should be d += in short hash, and remove extra mix from long hash
 
+#include <cstdio>
 #include <memory.h>
 #include "SpookyV2.h"
 
@@ -24,6 +25,7 @@ void SpookyHash::Short(
     uint64 *hash1,
     uint64 *hash2)
 {
+    fprintf(stderr, "%s %d %s\n", __FILE__, __LINE__, __func__);
     uint64 buf[2*sc_numVars];
     union 
     { 
@@ -130,6 +132,7 @@ void SpookyHash::Hash128(
     uint64 *hash1, 
     uint64 *hash2)
 {
+    fprintf(stderr, "%s %d %s\n", __FILE__, __LINE__, __func__);
     if (length < sc_bufSize)
     {
         Short(message, length, hash1, hash2);
@@ -190,6 +193,7 @@ void SpookyHash::Hash128(
 // init spooky state
 void SpookyHash::Init(uint64 seed1, uint64 seed2)
 {
+    fprintf(stderr, "%s %d %s\n", __FILE__, __LINE__, __func__);
     m_length = 0;
     m_remainder = 0;
     m_state[0] = seed1;
@@ -200,6 +204,7 @@ void SpookyHash::Init(uint64 seed1, uint64 seed2)
 // add a message fragment to the state
 void SpookyHash::Update(const void *message, size_t length)
 {
+    fprintf(stderr, "%s %d %s\n", __FILE__, __LINE__, __func__);
     uint64 h0,h1,h2,h3,h4,h5,h6,h7,h8,h9,h10,h11;
     size_t newLength = length + m_remainder;
     uint8  remainder;
@@ -304,6 +309,7 @@ void SpookyHash::Update(const void *message, size_t length)
 // report the hash for the concatenation of all message fragments so far
 void SpookyHash::Final(uint64 *hash1, uint64 *hash2)
 {
+    fprintf(stderr, "%s %d %s\n", __FILE__, __LINE__, __func__);
     // init the variables
     if (m_length < sc_bufSize)
     {

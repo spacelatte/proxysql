@@ -20,71 +20,91 @@ endif
 libssl/openssl/libssl.a:
 #	cd libssl && rm -rf openssl-1.1.0h || true
 #	cd libssl && tar -zxf openssl-1.1.0h.tar.gz
-	cd libssl && rm -rf openssl-1.1.1b || true
-	cd libssl && tar -zxf openssl-1.1.1b.tar.gz
+	#cd libssl && rm -rf openssl-1.1.1b || true
+	#cd libssl && tar -zxf openssl-1.1.1b.tar.gz
+	cd ./libssl && rm -rf ./openssl && mkdir -p ./openssl && \
+		tar -C ./openssl --strip-components=1 -xf ./openssl-1.1.1b.tar.gz
 	cd libssl/openssl  && ./config no-ssl3
 	cd libssl/openssl && CC=${CC} CXX=${CXX} ${MAKE}
 libssl: libssl/openssl/libssl.a
 
 libev/libev/.libs/libev.a:
-	cd libev && rm -rf libev-4.24 || true
-	cd libev && tar -zxf libev-4.24.tar.gz
+	#cd libev && rm -rf libev-4.24 || true
+	#cd libev && tar -zxf libev-4.24.tar.gz
+	cd ./libev && rm -rf ./libev && mkdir -p ./libev && \
+		tar -C ./libev --strip-components=1 -xf ./libev-4.24.tar.gz
 	cd libev/libev  && ./configure
 	cd libev/libev && CC=${CC} CXX=${CXX} ${MAKE}
 ev: libev/libev/.libs/libev.a
 
 google-coredumper/google-coredumper/.libs/libcoredumper.a:
-	cd google-coredumper && rm -rf google-coredumper || true
-	cd google-coredumper && tar -zxf google-coredumper.tar.gz
+	#cd google-coredumper && rm -rf google-coredumper || true
+	#cd google-coredumper && tar -zxf google-coredumper.tar.gz
+	cd ./google-coredumper && rm -rf ./google-coredumper && mkdir -p ./google-coredumper && \
+		tar -C ./google-coredumper --strip-components=1 -xf ./google-coredumper.tar.gz
 	cd google-coredumper/google-coredumper && ./configure && CC=${CC} CXX=${CXX} ${MAKE}
 coredumper: google-coredumper/google-coredumper/.libs/libcoredumper.a
 
 
 curl/curl/lib/.libs/libcurl.a: #libssl/openssl/libssl.a
-	cd curl && rm -rf curl-7.57.0 || true
-	cd curl && tar -zxf curl-7.57.0.tar.gz
+	#cd curl && rm -rf curl-7.57.0 || true
+	#cd curl && tar -zxf curl-7.57.0.tar.gz
+	cd ./curl && rm -rf ./curl && mkdir -p ./curl && \
+		tar -C ./curl --strip-components=1 -xf ./curl-7.57.0.tar.gz
 	#cd curl/curl && ./configure --disable-debug --disable-ftp --disable-ldap --disable-ldaps --disable-rtsp --disable-proxy --disable-dict --disable-telnet --disable-tftp --disable-pop3 --disable-imap --disable-smb --disable-smtp --disable-gopher --disable-manual --disable-ipv6 --disable-sspi --disable-crypto-auth --disable-ntlm-wb --disable-tls-srp --without-nghttp2 --without-libidn2 --without-libssh2 --without-brotli --with-ssl=$(shell pwd)/../../libssl/openssl/ && CC=${CC} CXX=${CXX} ${MAKE}
 	cd curl/curl && ./configure --disable-debug --disable-ftp --disable-ldap --disable-ldaps --disable-rtsp --disable-proxy --disable-dict --disable-telnet --disable-tftp --disable-pop3 --disable-imap --disable-smb --disable-smtp --disable-gopher --disable-manual --disable-ipv6 --disable-sspi --disable-crypto-auth --disable-ntlm-wb --disable-tls-srp --without-nghttp2 --without-libidn2 --without-libssh2 --without-brotli --without-librtmp --without-libpsl --without-ssl && CC=${CC} CXX=${CXX} ${MAKE}
 curl: curl/curl/lib/.libs/libcurl.a
 
 libmicrohttpd/libmicrohttpd/src/microhttpd/.libs/libmicrohttpd.a:
-	cd libmicrohttpd && rm -rf libmicrohttpd-0.9.55 || true
-	cd libmicrohttpd && tar -zxf libmicrohttpd-0.9.55.tar.gz
+	#cd libmicrohttpd && rm -rf libmicrohttpd-0.9.55 || true
+	#cd libmicrohttpd && tar -zxf libmicrohttpd-0.9.55.tar.gz
+	cd ./libmicrohttpd && rm -rf ./libmicrohttpd && mkdir -p ./libmicrohttpd && \
+		tar -C ./libmicrohttpd --strip-components=1 -xf ./libmicrohttpd-0.9.55.tar.gz
 	cd libmicrohttpd/libmicrohttpd && ./configure --disable-https && CC=${CC} CXX=${CXX} ${MAKE}
 microhttpd: libmicrohttpd/libmicrohttpd/src/microhttpd/.libs/libmicrohttpd.a
 
 cityhash/cityhash/src/.libs/libcityhash.a:
-	cd cityhash && rm -rf cityhash || true
-	cd cityhash && tar -zxf cityhash.tar.gz
+	#cd cityhash && rm -rf cityhash || true
+	#cd cityhash && tar -zxf cityhash.tar.gz
+	cd ./cityhash && rm -rf ./cityhash && mkdir -p ./cityhash && \
+		tar -C ./cityhash --strip-components=1 -xf ./cityhash.tar.gz
 	cd cityhash/cityhash && ./configure && CC=${CC} CXX=${CXX} ${MAKE}
 cityhash: cityhash/cityhash/src/.libs/libcityhash.a
 
 lz4/lz4/liblz4.a:
-	cd lz4 && rm -rf lz4-1.7.5 || true
-	cd lz4 && tar -zxf lz4-1.7.5.tar.gz
+	#cd lz4 && rm -rf lz4-1.7.5 || true
+	#cd lz4 && tar -zxf lz4-1.7.5.tar.gz
+	cd ./lz4 && rm -rf ./lz4 && mkdir -p ./lz4 && \
+		tar -C ./lz4 --strip-components=1 -xf ./lz4-1.7.5.tar.gz
 	cd lz4/lz4 && CC=${CC} CXX=${CXX} ${MAKE}
 lz4: lz4/lz4/liblz4.a
 
 clickhouse-cpp/clickhouse-cpp/clickhouse/libclickhouse-cpp-lib.a:
-	cd clickhouse-cpp && rm -rf clickhouse-cpp || true
-	cd clickhouse-cpp && tar -zxf clickhouse-cpp.tar.gz
+	#cd clickhouse-cpp && rm -rf clickhouse-cpp || true
+	#cd clickhouse-cpp && tar -zxf clickhouse-cpp.tar.gz
+	cd ./clickhouse-cpp && rm -rf ./clickhouse-cpp && mkdir -p ./clickhouse-cpp && \
+		tar -C ./clickhouse-cpp --strip-components=1 -xf ./clickhouse-cpp.tar.gz
 	cd clickhouse-cpp/clickhouse-cpp && cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo .
 	cd clickhouse-cpp/clickhouse-cpp && CC=${CC} CXX=${CXX} ${MAKE}
 
 clickhouse-cpp: clickhouse-cpp/clickhouse-cpp/clickhouse/libclickhouse-cpp-lib.a
 
 
-libdaemon/libdaemon/libdaemon/.libs/libdaemon.a: 
-	cd libdaemon && rm -rf libdaemon-0.14
-	cd libdaemon && tar -zxf libdaemon-0.14.tar.gz
+libdaemon/libdaemon/libdaemon/.libs/libdaemon.a:
+	#cd libdaemon && rm -rf libdaemon-0.14
+	#cd libdaemon && tar -zxf libdaemon-0.14.tar.gz
+	cd ./libdaemon && rm -rf ./libdaemon && mkdir -p ./libdaemon && \
+		tar -C ./libdaemon --strip-components=1 -xf ./libdaemon-0.14.tar.gz
 	cd libdaemon/libdaemon && ./configure --disable-examples
 	cd libdaemon/libdaemon && CC=${CC} CXX=${CXX} ${MAKE}
 
 libdaemon: libdaemon/libdaemon/libdaemon/.libs/libdaemon.a
 
 jemalloc/jemalloc/lib/libjemalloc.a:
-	cd jemalloc && rm -rf jemalloc-5.2.0
-	cd jemalloc && tar -jxf jemalloc-5.2.0.tar.bz2
+	#cd jemalloc && rm -rf jemalloc-5.2.0
+	#cd jemalloc && tar -jxf jemalloc-5.2.0.tar.bz2
+	cd ./jemalloc && rm -rf ./jemalloc && mkdir -p ./jemalloc && \
+		tar -C ./jemalloc --strip-components=1 -xf ./jemalloc-5.2.0.tar.bz2
 	cd jemalloc/jemalloc && patch src/jemalloc.c < ../issue823.520.patch
 	cd jemalloc/jemalloc && ./configure ${MYJEOPT}
 #	cd jemalloc/jemalloc && sed -i -e 's/-O3 /-O3 -fPIC /' Makefile
@@ -94,10 +114,16 @@ jemalloc: jemalloc/jemalloc/lib/libjemalloc.a
 
 
 mariadb-client-library/mariadb_client/libmariadb/libmariadbclient.a: libssl/openssl/libssl.a
-	cd mariadb-client-library && rm -rf mariadb-connector-c-3.0.2-src
-	cd mariadb-client-library && tar -zxf mariadb-connector-c-3.0.2-src.tar.gz
+	cd mariadb-client-library && rm -rf mariadb-connector-c-*/
+	#cd mariadb-client-library && tar -zxf mariadb-connector-c-3.0.2-src.tar.gz
+	cd ./mariadb-client-library && rm -rf ./mariadb_client && mkdir -p ./mariadb_client && \
+		tar -C ./mariadb_client --strip-components=1 -xf ./mariadb-connector-c-3.1.3-src.tar.gz
 	cd mariadb-client-library/mariadb_client && cmake . -DOPENSSL_ROOT_DIR=$(shell pwd)/libssl/openssl/ -DOPENSSL_LIBRARIES=$(shell pwd)/libssl/openssl/ .
 #	cd mariadb-client-library/mariadb_client && cmake . -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl # this is needed on MacOSX
+	cd mariadb-client-library/mariadb_client && CC=${CC} CXX=${CXX} ${MAKE}
+	cd mariadb-client-library/mariadb_client && CC=${CC} CXX=${CXX} ${MAKE} install
+
+OTHERS:
 	cd mariadb-client-library/mariadb_client && patch libmariadb/mariadb_stmt.c < ../mariadb_stmt.c.patch
 	cd mariadb-client-library/mariadb_client && patch libmariadb/mariadb_lib.c < ../mariadb_lib.c.patch
 #	cd mariadb-client-library/mariadb_client && patch libmariadb/net.c < ../net.c.patch
@@ -107,8 +133,8 @@ mariadb-client-library/mariadb_client/libmariadb/libmariadbclient.a: libssl/open
 	cd mariadb-client-library/mariadb_client && patch include/mysql.h < ../mysql.h.patch
 	cd mariadb-client-library/mariadb_client && patch include/mariadb_com.h < ../mariadb_com.h.patch
 	cd mariadb-client-library/mariadb_client && patch libmariadb/ma_alloc.c < ../ma_alloc.c.patch
-	cd mariadb-client-library/mariadb_client && patch libmariadb/ma_charset.c < ../ma_charset.c.patch
-	cd mariadb-client-library/mariadb_client && patch libmariadb/ma_pvio.c < ../ma_pvio.c.patch
+	#cd mariadb-client-library/mariadb_client && patch libmariadb/ma_charset.c < ../ma_charset.c.patch
+	#cd mariadb-client-library/mariadb_client && patch libmariadb/ma_pvio.c < ../ma_pvio.c.patch
 	cd mariadb-client-library/mariadb_client && patch unittest/libmariadb/basic-t.c < ../unittest_basic-t.c.patch
 	cd mariadb-client-library/mariadb_client && patch unittest/libmariadb/charset.c < ../unittest_charset.c.patch
 	cd mariadb-client-library/mariadb_client && CC=${CC} CXX=${CXX} ${MAKE}
@@ -118,16 +144,20 @@ mariadb_client: mariadb-client-library/mariadb_client/libmariadb/libmariadbclien
 
 
 sqlite3/sqlite3/sqlite3.o:
-	cd sqlite3 && rm -rf sqlite-amalgamation-3190200
-	cd sqlite3 && tar -zxf sqlite-amalgamation-3190200.tar.gz
+	#cd sqlite3 && rm -rf sqlite-amalgamation-3190200
+	#cd sqlite3 && tar -zxf sqlite-amalgamation-3190200.tar.gz
+	cd ./sqlite3 && rm -rf ./sqlite3 && mkdir -p ./sqlite3 && \
+		tar -C ./sqlite3 --strip-components=1 -xf ./sqlite-amalgamation-3190200.tar.gz
 	cd sqlite3/sqlite3 && patch sqlite3.c < ../from_unixtime.patch
 	cd sqlite3/sqlite3 && ${CC} ${MYCFLAGS} -c -o sqlite3.o sqlite3.c -DSQLITE_ENABLE_MEMORY_MANAGEMENT -DSQLITE_ENABLE_JSON1
 
 sqlite3: sqlite3/sqlite3/sqlite3.o
 
 libconfig/libconfig/lib/.libs/libconfig++.a:
-	cd libconfig && rm -rf libconfig-1.7.2
-	cd libconfig && tar -zxf libconfig-1.7.2.tar.gz
+	#cd libconfig && rm -rf libconfig-1.7.2
+	#cd libconfig && tar -zxf libconfig-1.7.2.tar.gz
+	cd ./libconfig && rm -rf ./libconfig && mkdir -p ./libconfig && \
+		tar -C ./libconfig --strip-components=1 -xf ./libconfig-1.7.2.tar.gz
 	cd libconfig/libconfig && ./configure --disable-examples
 	cd libconfig/libconfig && CC=${CC} CXX=${CXX} ${MAKE}
 
@@ -135,9 +165,11 @@ libconfig: libconfig/libconfig/lib/.libs/libconfig++.a
 
 
 re2/re2/obj/libre2.a:
-	cd re2 && rm -rf re2-2018-07-01
+	#cd re2 && rm -rf re2-2018-07-01
 #	cd re2 && tar -zxf re2-20140304.tgz
-	cd re2 && tar -zxf re2.tar.gz
+	#cd re2 && tar -zxf re2.tar.gz
+	cd ./re2 && rm -rf ./re2 && mkdir -p ./re2 && \
+		tar -C ./re2 --strip-components=1 -xf ./re2.tar.gz
 #	cd re2/re2 && sed -i -e 's/-O3 -g /-O3 -fPIC /' Makefile
 #	cd re2 && patch re2/util/mutex.h < mutex.h.patch
 	cd re2/re2 && sed -i -e 's/-O3 /-O3 -DMEMORY_SANITIZER -DRE2_ON_VALGRIND /' Makefile
@@ -146,37 +178,36 @@ re2/re2/obj/libre2.a:
 re2: re2/re2/obj/libre2.a
 
 pcre/pcre/.libs/libpcre.a:
-	cd pcre && rm -rf pcre-8.39
-	cd pcre && tar -zxf pcre-8.39.tar.gz
+	#cd pcre && rm -rf pcre-8.39
+	#cd pcre && tar -zxf pcre-8.39.tar.gz
+	cd ./pcre && rm -rf ./pcre && mkdir -p ./pcre && \
+		tar -C ./pcre --strip-components=1 -xf ./pcre-8.39.tar.gz
 	cd pcre/pcre && ./configure
 	cd pcre/pcre && CC=${CC} CXX=${CXX} ${MAKE}
 pcre: pcre/pcre/.libs/libpcre.a
 
 cleanpart:
-	cd mariadb-client-library && rm -rf mariadb-connector-c-2.3.1
-	cd mariadb-client-library && rm -rf mariadb-connector-c-3.0.2-src
-	cd jemalloc && rm -rf jemalloc-4.2.1
+	cd mariadb-client-library && rm -rf mariadb-connector-*/ mariadb_client
+	cd jemalloc && rm -rf jemalloc-*/
 	cd sqlite3/sqlite3 && rm -rf *
 .PHONY: cleanpart
 
 cleanall:
-	cd libdaemon && rm -rf libdaemon-0.14
-	cd jemalloc && rm -rf jemalloc-4.3.1 || true
-	cd jemalloc && rm -rf jemalloc-5.2.0 || true
-	cd mariadb-client-library && rm -rf mariadb-connector-c-2.3.1
-	cd mariadb-client-library && rm -rf mariadb-connector-c-3.0.2-src
-	cd libconfig && rm -rf libconfig-1.4.9
-	cd re2 && rm -rf re2-2018-07-01
-	cd pcre && rm -rf pcre-8.39
-	cd sqlite3/sqlite3 && rm -rf * || true
-	cd clickhouse-cpp/clickhouse-cpp && rm -rf * || true
-	cd lz4 && rm -rf lz4-1.7.5 || true
-	cd libmicrohttpd && rm -rf libmicrohttpd-0.9.55 || true
-	cd curl && rm -rf curl-7.57.0 || true
-	cd google-coredumper && rm -rf google-coredumper || true
-	cd libev && rm -rf libev-4.24 || true
-	cd libssl && rm -rf openssl-1.1.0h || true
-	cd libssl && rm -rf openssl-1.1.1b || true
-	cd libconfig && rm -rf libconfig-1.7.2 || true
+	cd mariadb-client-library && rm -rf mariadb-connector-c-*/ & \
+	cd libdaemon && rm -rf libdaemon-*/                        & \
+	cd libconfig && rm -rf libconfig-*/                        & \
+	cd re2 && rm -rf re2-*/                                    & \
+	cd pcre && rm -rf pcre-*/                                  & \
+	cd jemalloc && rm -rf jemalloc-*/                  || true & \
+	cd sqlite3/sqlite3 && rm -rf *                     || true & \
+	cd clickhouse-cpp/clickhouse-cpp && rm -rf *       || true & \
+	cd lz4 && rm -rf lz4-*/                            || true & \
+	cd libmicrohttpd && rm -rf libmicrohttpd-0.9.55    || true & \
+	cd curl && rm -rf curl-*/                          || true & \
+	cd google-coredumper && rm -rf google-coredumper   || true & \
+	cd libev && rm -rf libev-*/                        || true & \
+	cd libssl && rm -rf openssl-*/                     || true & \
+	cd libconfig && rm -rf libconfig-*/                || true & \
+	wait
 .PHONY: cleanall
 

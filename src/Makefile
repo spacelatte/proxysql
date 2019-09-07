@@ -94,7 +94,7 @@ else
 	LDIRS+= -L$(CURL_DIR)/lib/.libs
 endif
 ifeq ($(UNAME_S),Linux)
-	MYLIBS+= -ldl
+	MYLIBS+= -ldl -lssl -lre2 -lmariadbclient -lpthread -lm -lz -lcrypto -lcurl
 endif
 ifeq ($(UNAME_S),FreeBSD)
 	MYLIBS+= -lexecinfo

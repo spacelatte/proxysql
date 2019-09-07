@@ -7,7 +7,7 @@ EXTRALINK=#-pg
 ALL_DEBUG=-ggdb -DDEBUG
 NO_DEBUG=
 DEBUG=${ALL_DEBUG}
-#export DEBUG
+export DEBUG
 #export OPTZ
 #export EXTRALINK
 export MAKE
@@ -397,6 +397,14 @@ cleanbuild:
 
 .PHONY: install
 install: src/proxysql
+	mkdir -p /usr/lib/mariadb/plugin
+	ln -sf ../../lib/mariadb /usr/local/lib/mariadb
+	#install -m 644 ./deps/mariadb-client-library/mariadb_client/dialog.so
+	#install -m 644 ./deps/mariadb-client-library/mariadb_client/libmariadb/libmariadb.so
+	#install -m 644 ./deps/mariadb-client-library/mariadb_client/client_ed25519.so        /usr/lib/mariadb/plugin
+	install -m 644 ./deps/mariadb-client-library/mariadb_client/mysql_clear_password.so  /usr/lib/mariadb/plugin
+	install -m 644 ./deps/mariadb-client-library/mariadb_client/caching_sha2_password.so /usr/lib/mariadb/plugin
+	install -m 644 ./deps/mariadb-client-library/mariadb_client/sha256_password.so       /usr/lib/mariadb/plugin
 	install -m 0755 src/proxysql /usr/bin
 	install -m 0600 etc/proxysql.cnf /etc
 	if [ ! -d /var/lib/proxysql ]; then mkdir /var/lib/proxysql ; fi

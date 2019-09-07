@@ -660,6 +660,7 @@ static void * HGCU_thread_run() {
 			if (myconn->mysql->net.pvio && myconn->mysql->net.fd && myconn->mysql->net.buff) {
 				MySQL_Connection_userinfo *userinfo = myconn->userinfo;
 				char *auth_password = NULL;
+				fprintf(stderr, "#### here: %s %s\n", userinfo->password, userinfo->sha1_pass);
 				if (userinfo->password) {
 					if (userinfo->password[0]=='*') { // we don't have the real password, let's pass sha1
 						auth_password=userinfo->sha1_pass;

@@ -22,6 +22,7 @@ MySQL_Authentication::MySQL_Authentication() {
 #endif
 	creds_backends.cred_array = new PtrArray();
 	creds_frontends.cred_array = new PtrArray();
+	fprintf(stderr,"%s %d %s\n", __FILE__, __LINE__, __func__);
 };
 
 MySQL_Authentication::~MySQL_Authentication() {
@@ -77,6 +78,7 @@ __loop_remove_inactives:
 }
 
 bool MySQL_Authentication::add(char * username, char * password, enum cred_username_type usertype, bool use_ssl, int default_hostgroup, char *default_schema, bool schema_locked, bool transaction_persistent, bool fast_forward, int max_connections, char *comment) {
+	fprintf(stderr,"%s %d %s %s %s\n", __FILE__, __LINE__, __func__, username, password);
 	uint64_t hash1, hash2;
 	SpookyHash myhash;
 	myhash.Init(1,2);
@@ -145,6 +147,7 @@ bool MySQL_Authentication::add(char * username, char * password, enum cred_usern
 
 
 unsigned int MySQL_Authentication::memory_usage() {
+	fprintf(stderr,"%s %d %s\n", __FILE__, __LINE__, __func__);
 	unsigned int ret=0;
 #ifdef PROXYSQL_AUTH_PTHREAD_MUTEX
 	pthread_rwlock_rdlock(&creds_frontends.lock);
@@ -332,6 +335,7 @@ void MySQL_Authentication::decrease_frontend_user_connections(char *username) {
 }
 
 bool MySQL_Authentication::del(char * username, enum cred_username_type usertype, bool set_lock) {
+	fprintf(stderr,"%s %d %s\n", __FILE__, __LINE__, __func__);
 	bool ret=false;
 	uint64_t hash1, hash2;
 	SpookyHash *myhash=new SpookyHash();
@@ -372,6 +376,7 @@ bool MySQL_Authentication::del(char * username, enum cred_username_type usertype
 };
 
 bool MySQL_Authentication::set_SHA1(char * username, enum cred_username_type usertype, void *sha_pass) {
+	fprintf(stderr,"%s %d %s %s\n", __FILE__, __LINE__, __func__, sha_pass);
 	bool ret=false;
 	uint64_t hash1, hash2;
 	SpookyHash *myhash=new SpookyHash();
@@ -407,6 +412,7 @@ bool MySQL_Authentication::set_SHA1(char * username, enum cred_username_type use
 };
 
 bool MySQL_Authentication::exists(char * username) {
+	fprintf(stderr,"%s %d %s\n", __FILE__, __LINE__, __func__);
 	bool ret = false;
 	uint64_t hash1, hash2;
 	SpookyHash myhash;
@@ -426,6 +432,7 @@ bool MySQL_Authentication::exists(char * username) {
 }
 
 char * MySQL_Authentication::lookup(char * username, enum cred_username_type usertype, bool *use_ssl, int *default_hostgroup, char **default_schema, bool *schema_locked, bool *transaction_persistent, bool *fast_forward, int *max_connections, void **sha1_pass) {
+	fprintf(stderr,"%s %d %s %s\n", __FILE__, __LINE__, __func__, sha1_pass);
 	char *ret=NULL;
 	uint64_t hash1, hash2;
 	SpookyHash myhash;
@@ -510,6 +517,7 @@ bool MySQL_Authentication::reset() {
 
 
 uint64_t MySQL_Authentication::_get_runtime_checksum(enum cred_username_type usertype) {
+	fprintf(stderr,"%s %d %s\n", __FILE__, __LINE__, __func__);
 	creds_group_t &cg=(usertype==USERNAME_BACKEND ? creds_backends : creds_frontends);
 	std::map<uint64_t, account_details_t *>::iterator it;
 	if (cg.bt_map.size() == 0) {

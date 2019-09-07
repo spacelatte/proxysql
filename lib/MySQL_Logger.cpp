@@ -119,8 +119,8 @@ void MySQL_Event::write_auth(std::fstream *f, MySQL_Session *sess) {
 		time_t timer=start_time/1000/1000;
 		struct tm* tm_info;
 		tm_info = localtime(&timer);
-		char buffer1[64];
-		char buffer2[64];
+		char buffer1[80];
+		char buffer2[80];
 		strftime(buffer1, 32, "%Y-%m-%d %H:%M:%S", tm_info);
 		sprintf(buffer2,"%s.%03u", buffer1, (unsigned)(start_time%1000000)/1000);
 		j["time"] = buffer2;
@@ -202,8 +202,8 @@ void MySQL_Event::write_auth(std::fstream *f, MySQL_Session *sess) {
 				time_t timer= (orig_time)/1000/1000;
 				struct tm* tm_info;
 				tm_info = localtime(&timer);
-				char buffer1[64];
-				char buffer2[64];
+				char buffer1[80];
+				char buffer2[80];
 				strftime(buffer1, 32, "%Y-%m-%d %H:%M:%S", tm_info);
 				sprintf(buffer2,"%s.%03u", buffer1, (unsigned)(orig_time%1000000)/1000);
 				j["creation_time"] = buffer2;
@@ -376,8 +376,8 @@ uint64_t MySQL_Event::write_query_format_2_json(std::fstream *f) {
 		time_t timer=start_time/1000/1000;
 		struct tm* tm_info;
 		tm_info = localtime(&timer);
-		char buffer1[64];
-		char buffer2[64];
+		char buffer1[80];
+		char buffer2[80];
 		strftime(buffer1, 32, "%Y-%m-%d %H:%M:%S", tm_info);
 		sprintf(buffer2,"%s.%06u", buffer1, (unsigned)(start_time%1000000));
 		j["starttime"] = buffer2;
@@ -387,8 +387,8 @@ uint64_t MySQL_Event::write_query_format_2_json(std::fstream *f) {
 		time_t timer=end_time/1000/1000;
 		struct tm* tm_info;
 		tm_info = localtime(&timer);
-		char buffer1[64];
-		char buffer2[64];
+		char buffer1[80];
+		char buffer2[80];
 		strftime(buffer1, 32, "%Y-%m-%d %H:%M:%S", tm_info);
 		sprintf(buffer2,"%s.%06u", buffer1, (unsigned)(end_time%1000000));
 		j["endtime"] = buffer2;

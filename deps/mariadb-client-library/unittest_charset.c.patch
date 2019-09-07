@@ -5,13 +5,13 @@
    char *csdefault= (char*)mysql_character_set_name(mysql);
  
 -  FAIL_IF(mysql_set_character_set(mysql, csname), mysql_error(mysql));
-+  FAIL_IF(mysql_set_character_set(mysql, csname, 0), mysql_error(mysql));
++  FAIL_IF(mysql_set_character_set(mysql, csname, 0), mysql_error(mysql)); /// test-patch-1
  
    mysql_get_character_set_info(mysql, &cs);
  
    FAIL_IF(strcmp(cs.csname, "utf8") || strcmp(cs.name, "utf8_general_ci"), "Character set != UTF8");
 -  FAIL_IF(mysql_set_character_set(mysql, csdefault), mysql_error(mysql));
-+  FAIL_IF(mysql_set_character_set(mysql, csdefault, 0), mysql_error(mysql));
++  FAIL_IF(mysql_set_character_set(mysql, csdefault, 0), mysql_error(mysql)); /// test-patch-2
  
    return OK;
  }
@@ -20,7 +20,7 @@
    /* Retrieve character set information. */
  
 -  mysql_set_character_set(mysql, "latin1");
-+  mysql_set_character_set(mysql, "latin1", 0);
++  mysql_set_character_set(mysql, "latin1", 0); /// test-patch-3
    bug30472_retrieve_charset_info(mysql,
                                   character_set_name_1,
                                   character_set_client_1,
@@ -29,7 +29,7 @@
    /* Switch client character set. */
  
 -  FAIL_IF(mysql_set_character_set(mysql, "utf8"), "Setting cs to utf8 failed");
-+  FAIL_IF(mysql_set_character_set(mysql, "utf8", 0), "Setting cs to utf8 failed");
++  FAIL_IF(mysql_set_character_set(mysql, "utf8", 0), "Setting cs to utf8 failed"); /// test-patch-4
  
    /* Retrieve character set information. */
  
@@ -38,7 +38,7 @@
  
    rc= mysql_change_user(mysql, username, password, (schema) ? schema : "test");
 -  mysql_set_character_set(mysql, "latin1");
-+  mysql_set_character_set(mysql, "latin1", 0);
++  mysql_set_character_set(mysql, "latin1", 0); /// test-patch-5
    check_mysql_rc(rc, mysql);
  
    /* Retrieve character set information. */
@@ -47,7 +47,7 @@
      if (strcmp(row[0], "ucs2") && strcmp(row[0], "utf16le") && strcmp(row[0], "utf8mb4") && 
          strcmp(row[0], "utf16") && strcmp(row[0], "utf32")) {
 -      rc= mysql_set_character_set(mysql, row[0]);
-+      rc= mysql_set_character_set(mysql, row[0], 0);
++      rc= mysql_set_character_set(mysql, row[0], 0); /// test-patch-6
        check_mysql_rc(rc, mysql);
      }
    }
@@ -56,7 +56,7 @@
    if (strcmp(osname, "utf8"))
    {
 -    rc= mysql_set_character_set(mysql, "utf8");
-+    rc= mysql_set_character_set(mysql, "utf8", 0);
++    rc= mysql_set_character_set(mysql, "utf8", 0); /// test-patch-7
      check_mysql_rc(rc, mysql);
  
      csname2= mysql_character_set_name(mysql);
@@ -65,7 +65,7 @@
      FAIL_IF(!strcmp(csname2, csname1), "Wrong charset: expected utf8");
  
 -    rc= mysql_set_character_set(mysql, "auto");
-+    rc= mysql_set_character_set(mysql, "auto", 0);
++    rc= mysql_set_character_set(mysql, "auto", 0); /// test-patch-8
      check_mysql_rc(rc, mysql);
  
      csname2= mysql_character_set_name(mysql);

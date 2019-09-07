@@ -26,6 +26,10 @@ static unsigned int near_pow_2 (unsigned int n) {
   return i ? i : n;
 }
 
+#ifndef CACHE_LINE_SIZE
+#define CACHE_LINE_SIZE 0
+#endif
+
 #ifdef IDLE_THREADS
 typedef struct __attribute__((aligned(CACHE_LINE_SIZE))) _conn_exchange_t {
 	pthread_mutex_t mutex_idles;
@@ -34,6 +38,8 @@ typedef struct __attribute__((aligned(CACHE_LINE_SIZE))) _conn_exchange_t {
 	PtrArray *resume_mysql_sessions;
 } conn_exchange_t;
 #endif // IDLE_THREADS
+
+#undef CACHE_LINE_SIZE
 
 typedef struct _thr_id_username_t {
 	uint32_t id;
